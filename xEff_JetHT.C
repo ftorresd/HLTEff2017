@@ -57,12 +57,17 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
         // double muon+photon trigger bit
         ULong64_t HLTEleMuX = (ULong64_t)data.GetLong64("HLTEleMuX");
-        bool hltMuPhoBit = (HLTEleMuX&2) ? true : false;
+        ULong64_t HLTPho = (ULong64_t)data.GetLong64("HLTPho");
+        ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
+        bool hltMuPhoBit = (HLTEleMuX&2) ? true : false; // doublemu_pho
+        // bool hltMuPhoBit = (HLTEleMuX&((int)TMath::Power(2,19))) ? true : false; //IsoMu27
+        // bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,12))) ? true : false; //HLT_PFJet80_v
+        // bool hltMuPhoBit = (HLTPho&((int)TMath::Power(2,7))) ? true : false; //HLT_Photon175_v
 
 
 
         // jet trigger bit
-        ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
+        // ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
         bool hltJetBit = (HLTJet&1024 || HLTJet&2048 || HLTJet&4096 || HLTJet&8192 || HLTJet&16384 || HLTJet&32768 || HLTJet&65536 || HLTJet&131072 || HLTJet&262144 || HLTJet&524288) ? true : false;
 
         // jet trigger matching
@@ -79,23 +84,48 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         // photon jet deltaR
         Int_t nPho = data.GetInt("nPho");
         bool phoJetDeltaR = false;
-        if (nPho >0 ){
+        if (nPho > 0 ){
             float* phoEta = data.GetPtrFloat("phoEta");
             float* phoPhi = data.GetPtrFloat("phoPhi");
             float* jetEta = data.GetPtrFloat("jetEta");
             float* jetPhi = data.GetPtrFloat("jetPhi");
-            phoJetDeltaR = (deltaR(*phoEta, *phoPhi, *jetEta, *jetPhi) > 1.0) ? true : false;    
+            phoJetDeltaR = (deltaR(phoEta[0], phoPhi[0], jetEta[0], jetPhi[0]) > 0.7) ? true : false;    
         }
         
+        // photon jet deltaR
+        Int_t nMu = data.GetInt("nMu");
+        bool muJetDeltaR = false;
+        if (nMu > 0 ){
+            float* muEta = data.GetPtrFloat("muEta");
+            float* muPhi = data.GetPtrFloat("muPhi");
+            float* jetEta = data.GetPtrFloat("jetEta");
+            float* jetPhi = data.GetPtrFloat("jetPhi");
+            muJetDeltaR = (deltaR(muEta[0], muPhi[0], jetEta[0], jetPhi[0]) > 0.7) ? true : false;    
+        }
+
+        // good muon
+        bool goodMu = false;
+        if (nMu > 0 ){
+            UShort_t* muIDbit = (UShort_t*)data.GetPtrShort("muIDbit");
+            goodMu = (muIDbit[0]&2) ? true : false; 
+        }
+        
+        // good photon
+        bool goodPho = false;
+        if (nPho > 0 ){
+            UShort_t* phoIDbit = (UShort_t*)data.GetPtrShort("phoIDbit");
+            goodPho = (phoIDbit[0]&1) ? true : false; 
+        }
 
 
         // denominator bit
-        bool denominatorBit = hltJetBit && jetTriggerMatchBit;
+        bool denominatorBit = hltJetBit && jetTriggerMatchBit && phoJetDeltaR && muJetDeltaR && goodMu && goodPho;
+        // bool denominatorBit = hltJetBit && jetTriggerMatchBit;
         // bool denominatorBit = hltJetBit;
         // cout << "denominatorBit: " << denominatorBit << endl;
 
         // numerator bit
-        // bool numeratorBit = denominatorBit && hltMuPhoBit && phoJetDeltaR;
+        // bool numeratorBit = denominatorBit;
         bool numeratorBit = denominatorBit && hltMuPhoBit;
 
         // cout << "#########" << endl;
@@ -108,7 +138,7 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         float* muPt = data.GetPtrFloat("muPt");
 
         // fill histos - muon
-        Int_t nMu = data.GetInt("nMu");
+        // Int_t nMu = data.GetInt("nMu");
         if (nMu > 0) {
             if (denominatorBit) {
                 countDen++;
