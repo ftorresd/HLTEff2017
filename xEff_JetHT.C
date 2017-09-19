@@ -23,7 +23,8 @@
 #include "tdrstyle.C"
 
 // void xEff_JetHT(const char* inpaths,int npaths) 
-void xEff_JetHT(const char* inpaths) {
+// void xEff_JetHT(const char* inpaths) {
+void xEff_JetHT(vector<string> inpaths) {
     int countNum = 0;
     int countDen = 0;
 
