@@ -123,7 +123,7 @@ class TreeReader {
    TreeReader(TTree* tree);
    TreeReader(const char* patt,               const char* treename = "ggNtuplizer/EventTree");
    TreeReader(const char** paths, int npaths, const char* treename = "ggNtuplizer/EventTree");
-   TreeReader(std::vector<std::string> paths, const char* treename = "ggNtuplizer/EventTree");
+   TreeReader(std::vector<std::string> paths, int npaths = -1, const char* treename = "ggNtuplizer/EventTree");
 
    virtual ~TreeReader();
 
@@ -183,7 +183,7 @@ class TreeReader {
 
    std::vector<std::string> FindFiles(const char* patt);
 
-   void  InitTreeChain(std::vector<std::string> paths, const char* treename);
+   void  InitTreeChain(std::vector<std::string> paths, int npaths, const char* treename);
    void  FindLeaf(const char* bname);
 
    TFile*   fFile;     // file handle associated with fTree
@@ -272,7 +272,7 @@ TreeReader::TreeReader(const char* patt, const char* treename) :
     * wildcards, while "rfio:rel*e/file*.root" is not.
     */
 
-   InitTreeChain(FindFiles(patt), treename);
+   InitTreeChain(FindFiles(patt), -1, treename);
 }
 
 //______________________________________________________________________________
@@ -300,11 +300,11 @@ TreeReader::TreeReader(const char** paths, int npaths, const char* treename) :
       for (int i = 0; i < npaths; i++)
          paths_.push_back(paths[i]);
 
-   InitTreeChain(paths_, treename);
+   InitTreeChain(paths_, -1, treename);
 }
 
 //______________________________________________________________________________
-TreeReader::TreeReader(std::vector<std::string> paths, const char* treename) :
+TreeReader::TreeReader(std::vector<std::string> paths, int npaths, const char* treename) :
    fFile(0),
    fTree(0),
    fTreeNum(-1),
@@ -322,7 +322,7 @@ TreeReader::TreeReader(std::vector<std::string> paths, const char* treename) :
    if (paths.size() == 1)
       paths = FindFiles(paths[0].c_str());
 
-   InitTreeChain(paths, treename);
+   InitTreeChain(paths, npaths, treename);
 }
 
 //______________________________________________________________________________
@@ -696,7 +696,7 @@ std::vector<std::string> TreeReader::FindFiles(const char* patt)
 }
 
 //______________________________________________________________________________
-void TreeReader::InitTreeChain(std::vector<std::string> paths, const char* treename)
+void TreeReader::InitTreeChain(std::vector<std::string> paths, int npaths, const char* treename)
 {
    /* Makes TTree or TChain based on the input given.
     */
@@ -729,13 +729,27 @@ void TreeReader::InitTreeChain(std::vector<std::string> paths, const char* treen
          FATAL(Form("\"%s\" is not a TTree", treename));
 
    } else {
-      fTree = new TChain(treename);
+      if (npaths > 0){
+        fTree = new TChain(treename);
 
-      // add root files with TTrees, reading the number of entries in each file
-      for (size_t i = 0; i < paths.size(); i++)
-         cout << " -------->  Chaining file " << i << "/" << paths.size() << ": " << paths[i].c_str() << endl;
-         if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
-            FATAL("TChain::AddFile() failed");
+        // add root files with TTrees, reading the number of entries in each file
+        for (size_t i = 0; i < npaths; i++) {
+           cout << " ------------------------->  Chaining file " << i+1 << "/" << npaths << ": " << paths[i].c_str() << endl;
+           cout << endl;
+           if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
+              FATAL("TChain::AddFile() failed");
+        }
+      } else {
+                fTree = new TChain(treename);
+        // add root files with TTrees, reading the number of entries in each file
+        for (size_t i = 0; i < paths.size(); i++) {
+           cout << " ------------------------->  Chaining file " << i+1 << "/" << paths.size() << ": " << paths[i].c_str() << endl;
+           cout << endl;
+           if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
+              FATAL("TChain::AddFile() failed");
+        }
+      }
+
    }
 
    // find out availability of MC truth info (check existence of "nMC" branch)

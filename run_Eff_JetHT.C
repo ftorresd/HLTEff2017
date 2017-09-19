@@ -1397,6 +1397,6 @@ inpath.push_back("root://cmseos.fnal.gov//store/user/ftorresd/triggerStudies2017
 inpath.push_back("root://cmseos.fnal.gov//store/user/ftorresd/triggerStudies2017/JetHT_Run2017D-PromptReco-v1_ggNtuples_JetHT_Run2017D_PromptReco_v1_DCSONLY_v11/JetHT/JetHT_Run2017D-PromptReco-v1/170917_183228/0001/ggtree_data_1382.root");
 	// inpath.push_back("data/ggtree_data_109.root");
 
-  // xEff_JetHT(inpath, 1);
-	xEff_JetHT(inpath);
+  	// xEff_JetHT(inpath);
+	xEff_JetHT(inpath, 3);
 }

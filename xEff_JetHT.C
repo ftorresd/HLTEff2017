@@ -24,12 +24,12 @@
 
 // void xEff_JetHT(const char* inpaths,int npaths) 
 // void xEff_JetHT(const char* inpaths) {
-void xEff_JetHT(vector<string> inpaths) {
+void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
     int countNum = 0;
     int countDen = 0;
 
     // get TTree from file ...
-    TreeReader data(inpaths);
+    TreeReader data(inpaths, npaths);
 
     // useful to determine which type of variable to use for which branches
     // data.Print();
