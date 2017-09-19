@@ -50,8 +50,8 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
 
         if(ev % 10000 == 0) {
-            cout << "##########################" << endl;
-            cout << "Event: " << ev << endl;
+            cout << " " << endl;
+            cout << "# ------------> Event: " << ev << "/" << data.GetEntriesFast() << endl;
         } 
 
 
