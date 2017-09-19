@@ -733,6 +733,7 @@ void TreeReader::InitTreeChain(std::vector<std::string> paths, const char* treen
 
       // add root files with TTrees, reading the number of entries in each file
       for (size_t i = 0; i < paths.size(); i++)
+         cout << " -------->  Chaining file " << i << "/" << paths.size() << ": " << paths[i].c_str() << endl;
          if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
             FATAL("TChain::AddFile() failed");
    }
