@@ -733,7 +733,7 @@ void TreeReader::InitTreeChain(std::vector<std::string> paths, int npaths, const
         fTree = new TChain(treename);
 
         // add root files with TTrees, reading the number of entries in each file
-        for (size_t i = 0; i < npaths; i++) {
+        for (int i = 0; i < npaths; i++) {
            cout << " ------------------------->  Chaining file " << i+1 << "/" << npaths << ": " << paths[i].c_str() << endl;
            cout << endl;
            if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
@@ -742,7 +742,7 @@ void TreeReader::InitTreeChain(std::vector<std::string> paths, int npaths, const
       } else {
                 fTree = new TChain(treename);
         // add root files with TTrees, reading the number of entries in each file
-        for (size_t i = 0; i < paths.size(); i++) {
+        for (int i = 0; i < paths.size(); i++) {
            cout << " ------------------------->  Chaining file " << i+1 << "/" << paths.size() << ": " << paths[i].c_str() << endl;
            cout << endl;
            if (((TChain*)fTree)->AddFile(paths[i].c_str(), 0) != 1)
