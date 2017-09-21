@@ -36,8 +36,8 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
     // ----------- HISTOS ----------------
 
-    TH1F* h_muPtDen = new TH1F("h_muPtDen", "h_muPtDen", 30, 0, 150);
-    TH1F* h_muPtNum = new TH1F("h_muPtNum", "h_muPtNum", 30, 0, 150);
+    TH1F h_muPtDen = TH1F("h_muPtDen", "h_muPtDen", 30, 0, 150);
+    TH1F h_muPtNum =  TH1F("h_muPtNum", "h_muPtNum", 30, 0, 150);
 
     // ----------- END HISTOS ------------
 
@@ -144,12 +144,12 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         if (nMu > 0) {
             if (denominatorBit) {
                 countDen++;
-                h_muPtDen->Fill(muPt[0]);
+                h_muPtDen.Fill(muPt[0]);
             } 
             if (numeratorBit) {
                 // cout << "numeratorBit: " << numeratorBit << endl;
                 countNum++;
-                h_muPtNum->Fill(muPt[0]);
+                h_muPtNum.Fill(muPt[0]);
             }
         }
 
