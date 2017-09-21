@@ -59,10 +59,10 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         ULong64_t HLTEleMuX = (ULong64_t)data.GetLong64("HLTEleMuX");
         ULong64_t HLTPho = (ULong64_t)data.GetLong64("HLTPho");
         ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
-        bool hltMuPhoBit = (HLTEleMuX&2) ? true : false; // doublemu_pho
-        // bool hltMuPhoBit = (HLTEleMuX&((int)TMath::Power(2,19))) ? true : false; //IsoMu27
+        // bool hltMuPhoBit = (HLTEleMuX&2) ? true : false; // doublemu_pho
+        // bool hltMuPhoBit = (HLTEleMuX&((int)TMath::Power(2,19))) ? true : false; //HLT_IsoMu27_v
         // bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,12))) ? true : false; //HLT_PFJet80_v
-        // bool hltMuPhoBit = (HLTPho&((int)TMath::Power(2,7))) ? true : false; //HLT_Photon175_v
+        bool hltMuPhoBit = (HLTPho&((int)TMath::Power(2,7))) ? true : false; //HLT_Photon175_v
 
 
 
@@ -119,7 +119,8 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
 
         // denominator bit
-        bool denominatorBit = hltJetBit && jetTriggerMatchBit && phoJetDeltaR && muJetDeltaR && goodMu && goodPho;
+        // bool denominatorBit = hltJetBit && jetTriggerMatchBit && phoJetDeltaR && muJetDeltaR && goodMu && goodPho;
+        bool denominatorBit = hltJetBit && jetTriggerMatchBit && phoJetDeltaR && goodPho; //only phton
         // bool denominatorBit = hltJetBit && jetTriggerMatchBit;
         // bool denominatorBit = hltJetBit;
         // cout << "denominatorBit: " << denominatorBit << endl;
