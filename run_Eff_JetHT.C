@@ -1395,5 +1395,5 @@
 	// inpath.push_back("data/ggtree_data_*.root");
 
   	// xEff_JetHT(inpath); 
-	xEff_JetHT(inpath.at(0), 100); 
+	xEff_JetHT(inpath, 100); 
 }
