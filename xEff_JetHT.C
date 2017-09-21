@@ -61,7 +61,7 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
         // bool hltMuPhoBit = (HLTEleMuX&2) ? true : false; // doublemu_pho
         // bool hltMuPhoBit = (HLTEleMuX&((int)TMath::Power(2,19))) ? true : false; //HLT_IsoMu27_v
-        bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,10))) ? true : false; //HLT_PFJet40_v
+        bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,14))) ? true : false; //HLT_PFJet40_v
         // bool hltMuPhoBit = (HLTPho&((int)TMath::Power(2,7))) ? true : false; //HLT_Photon175_v
 
 
