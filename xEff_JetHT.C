@@ -138,18 +138,20 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
         // muon pt
         float* muPt = data.GetPtrFloat("muPt");
+        float* jetPt = data.GetPtrFloat("jetPt");
+
 
         // fill histos - muon
         // Int_t nMu = data.GetInt("nMu");
-        if (nMu > 0) {
+        if (nJet > 0) {
             if (denominatorBit) {
                 countDen++;
-                h_muPtDen.Fill(muPt[0]);
+                h_muPtDen.Fill(jetPt[0]);
             } 
             if (numeratorBit) {
                 // cout << "numeratorBit: " << numeratorBit << endl;
                 countNum++;
-                h_muPtNum.Fill(muPt[0]);
+                h_muPtNum.Fill(jetPt[0]);
             }
         }
 
