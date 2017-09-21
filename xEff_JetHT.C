@@ -61,7 +61,7 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
         ULong64_t HLTJet = (ULong64_t)data.GetLong64("HLTJet");
         // bool hltMuPhoBit = (HLTEleMuX&2) ? true : false; // doublemu_pho
         // bool hltMuPhoBit = (HLTEleMuX&((int)TMath::Power(2,19))) ? true : false; //HLT_IsoMu27_v
-        bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,10))) ? true : false; //HLT_PFJet80_v
+        bool hltMuPhoBit = (HLTJet&((int)TMath::Power(2,10))) ? true : false; //HLT_PFJet40_v
         // bool hltMuPhoBit = (HLTPho&((int)TMath::Power(2,7))) ? true : false; //HLT_Photon175_v
 
 
@@ -167,6 +167,18 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
     c1->SaveAs("plots/h_EffPtMu.png");
     c1->SaveAs("plots/h_EffPtMu.pdf");
     c1->SaveAs("plots/h_EffPtMu.root");
+
+    // h_muPtDen
+    h_muPtDen->Draw("AP");
+    c1->SaveAs("plots/h_muPtDen.png");
+    c1->SaveAs("plots/h_muPtDen.pdf");
+    c1->SaveAs("plots/h_muPtDen.root");
+
+    // h_muPtNum
+    h_muPtDen->Draw("AP");
+    c1->SaveAs("plots/h_muPtNum.png");
+    c1->SaveAs("plots/h_muPtNum.pdf");
+    c1->SaveAs("plots/h_muPtNum.root");
 
 
 
