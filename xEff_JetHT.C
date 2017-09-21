@@ -161,7 +161,7 @@ void xEff_JetHT(vector<string> inpaths, int npaths = -1) {
 
     // Efficiency
     // TEfficiency* h_EffPtMu = new TEfficiency(*h_muPtNum, *h_muPtDen);
-    TEfficiency* h_EffPtMu = new TEfficiency(*h_muPtDen, *h_muPtNum);
+    TEfficiency* h_EffPtMu = new TEfficiency(h_muPtNum, h_muPtDen);
     TCanvas* c1 = new TCanvas();
     h_EffPtMu->Draw("AP");
     gSystem->Exec("rm -rf plots ; mkdir plots");
